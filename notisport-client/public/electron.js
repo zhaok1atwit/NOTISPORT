@@ -5,9 +5,11 @@ const isDev = require('electron-is-dev');
 
 function createWindow() {
   // Create the browser window.
+  //  Discreet Mode: 512w 72h
+  //  Overview Mode: 
   const win = new BrowserWindow({
-    width: 512,
-    height: 72,
+    width: 768,
+    height: 512,
     webPreferences: {
       nodeIntegration: true,
     },
