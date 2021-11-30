@@ -25,6 +25,10 @@ class League:
     nfl_week: int # current nfl week
 
 
+
+class Week:
+    weekNum: int
+
 class playDetails:
     down: int
     distance: int
@@ -51,6 +55,9 @@ class Drive:
     plays: list[Play]
     result: str
     endInScore: bool
+
+
+
 
 class Event:
     event_id: int
