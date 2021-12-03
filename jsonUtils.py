@@ -1,3 +1,7 @@
+import urllib.request, json
+
+
+
 #Parses through given JSON recurisvely until given key is found
 #and returns the data within the key
 #
@@ -22,3 +26,9 @@ def json_parsing(obj, key):
 
     results = extract(obj, arr, key)
     return results[0] if results else results
+
+#Queries given URL and returns JSON file
+def get_JSON(url:str):
+    request = urllib.request.urlopen(url)
+    data = json.load(request)
+    return data
