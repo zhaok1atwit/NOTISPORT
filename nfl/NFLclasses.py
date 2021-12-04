@@ -1,62 +1,104 @@
-from nfl.Team import Team
+from typing import List
 
-
-#class Player:
-  #  name: str
-   # playerId: int
-  #  posRank: int # players positional rank
-   # eligibleSlots: list[str] # example ['WR', 'WR/TE/RB']
-   # acquisitionType: str
-  #  proTeam: str # 'PIT' or 'LAR'
-   # injuryStatus: str
-    #injured: bool
-    #total_points: int # players total points during the season
-    #projected_total_points: int
-
-
-class playDetails:
-    down: int
-    distance: int
-    yardLine: int
-    yardsTillEndzone: int
-
-
-class playType:
-    playId: int
-    text: str
-    abv: str
-
+from nfl import LeagueClass
 
 class Play:
-    playType: playType
-    scoringPlay: bool
-    start: playDetails
-    end: playDetails
-    playResultText: str
-    awayScore: int
-    homeScore: int
+    type: str
+    desc: str
+    startDown: int
+    startDistatnce: int
+    startYardage: int
 
-#class Drive:
- #   currentPos: Team
-   # plays: list[Play]
-   # result: str
-  #  endInScore: bool
+    endDown: int
+    endDistance: int
+    endYardage: int
+    endDownDistanceText: str
+
+    def __init__(self, desc, sDown, sDistance, sYardage, eDown, eDistance, eYardage, eDownDistanceText,
+                 playType):
+        self.desc = desc
+        self.startDown = sDown
+        self.startDistance = sDistance
+        self.startYardage = sYardage
+
+        self.endDown = eDown
+        self.endDistance = eDistance
+        self.endYardage = eYardage
+        self.endDownDistanceText = eDownDistanceText
+
+        self.type = playType
+
+
+class Drive:
+    endInScore: bool
+
+    currentPos: int  #teamID
+    plays: List[Play]
+    desc: str
+    totalDistance: int
+    result: str
+
+    def __init__(self, team, plays, result, desc, dist, boolScore):
+        self.currentPos = team
+        self.plays = plays
+        self.desc = desc
+        self.result = result
+        self.totalDistance = dist
+        self.endInScore = boolScore
 
 
 class Event:
-    def __init__(self,eventID):
+    def __init__(self, eventID, drives, homeTeam, awayTeam,homeScore,awayScore):
         self.event_id = eventID
-        self.previous_drives = list()
-        self.current_drives = list()
-
+        self.drives = drives
+        self.home_team = LeagueClass.getTeam(homeTeam.team_id) #Team(homeTeam.team_id,homeTeam.team_abbrev,homeTeam.team_name,homeTeam.wins,homeTeam.losses,homeTeam.ties,homeTeam.streak_length,homeTeam.standing,homeTeam.logo_url)
+        self.away_team = LeagueClass.getTeam(awayTeam.team_id)
+        self.awayScore = awayScore
+        self.homeScore = homeScore
 
     event_id: int
-    home_hasPos: bool
-    home_team: Team
-    away_team: Team
-    away_hasPos: bool
-    previous_drives: list[Drive]
-    current_drives: list[Drive]
+    home_team: int #TeamIDs
+    homeScore: int
+    away_team: int #TeamIDs
+    awayScore: int
+    drives: List[Drive]
+
+class Team:
+
+    def __init__(self, teamID, teamAbr, teamName, Ws, Ls, Ts, currStreakLength, currStanding,
+                 logo):
+
+        self.team_id = teamID
+        self.team_abbrev = teamAbr
+        self.team_name = teamName
+        # self.division_id = divID
+        # self.division_name = divName
+        self.wins = Ws
+        self.losses = Ls
+        self.ties = Ts
+        # self.streak_type = streak
+        self.streak_length = currStreakLength
+        self.standing = currStanding
+        self.logo_url = logo
+        self.schedule = list()
+
+    team_id: int
+    team_abbrev: str
+    team_name: str
+    # division_id: str
+    # division_name: str
+    wins: int
+    losses: int
+    ties: int
+    streak_type: str  # string of either WIN or LOSS
+    streak_length: int  # how long the streak is for streak type
+    standing: int  # standing before playoffs
+    final_standings: int  # final standing at end of season
+    logo_url: str
+    # roster: list[Player]
+    # These 3 variables will have the same index and match on those indexes
+    schedule: List[Event]
+    # scores: list[int]
 
 
 
@@ -64,11 +106,14 @@ class Event:
 
 
 
-
-
-
-
-    
-
-
-
+# class Player:
+#  name: str
+# playerId: int
+#  posRank: int # players positional rank
+# eligibleSlots: list[str] # example ['WR', 'WR/TE/RB']
+# acquisitionType: str
+#  proTeam: str # 'PIT' or 'LAR'
+# injuryStatus: str
+# injured: bool
+# total_points: int # players total points during the season
+# projected_total_points: int
