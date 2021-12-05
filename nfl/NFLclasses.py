@@ -1,6 +1,9 @@
+
 from typing import List
 
+
 from nfl import LeagueClass
+
 
 class Play:
     type: str
@@ -48,11 +51,11 @@ class Drive:
 
 
 class Event:
-    def __init__(self, eventID, drives, homeTeam, awayTeam,homeScore,awayScore):
-        self.event_id = eventID
+    def __init__(self, eventID, drives, homeTeam, awayTeam,homeScore,awayScore,currLeague):
+        self.event_id = int(eventID)
         self.drives = drives
-        self.home_team = LeagueClass.getTeam(homeTeam.team_id) #Team(homeTeam.team_id,homeTeam.team_abbrev,homeTeam.team_name,homeTeam.wins,homeTeam.losses,homeTeam.ties,homeTeam.streak_length,homeTeam.standing,homeTeam.logo_url)
-        self.away_team = LeagueClass.getTeam(awayTeam.team_id)
+        self.home_team = homeTeam #Team(homeTeam.team_id,homeTeam.team_abbrev,homeTeam.team_name,homeTeam.wins,homeTeam.losses,homeTeam.ties,homeTeam.streak_length,homeTeam.standing,homeTeam.logo_url)
+        self.away_team = awayTeam
         self.awayScore = awayScore
         self.homeScore = homeScore
 
@@ -68,7 +71,7 @@ class Team:
     def __init__(self, teamID, teamAbr, teamName, Ws, Ls, Ts, currStreakLength, currStanding,
                  logo):
 
-        self.team_id = teamID
+        self.team_id = int(teamID)
         self.team_abbrev = teamAbr
         self.team_name = teamName
         # self.division_id = divID
@@ -81,6 +84,8 @@ class Team:
         self.standing = currStanding
         self.logo_url = logo
         self.schedule = list()
+    def get_teamID(self):
+        return self.team_id
 
     team_id: int
     team_abbrev: str
