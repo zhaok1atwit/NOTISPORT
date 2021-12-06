@@ -9,18 +9,6 @@ const PORT = 8080;
 
 async function init() {
 
-
-
-	//if (process.env.NODE_ENV === 'production') {
-		// Serve any static files
-	//	app.use(express.static(path.join(__dirname, 'portal-client/build')));
-
-		// Handle React routing, return all requests to React app
-	//	app.get('*', (request, response) => {
-	//		response.sendFile(path.join(__dirname, 'portal-client/build', 'index.html'));
-	//	});
-	//}
-
 	const httpServer = http.createServer(app);
 
 	httpServer.on('upgrade', (request: any, socket: any, head: any) => {

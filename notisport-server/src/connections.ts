@@ -20,18 +20,8 @@ var mongoNFL_Collection: Collection<Document>;
 
 const nflSubscriptionServer = new SubscriptionServer('nfl', nflMessageHandler);
 
-
-
-
-
-//mongoClient.connect()
-//.then(() => mongoClient.db('NFL'))
-//.then(db => db.collection('league'))
-//.then(collection => console.log(collection.find().toArray()))
-
 export async function initMongoDB(){
 
-	console.log('hello')
 	const mongoClient = new MongoClient(MONGO_SERVER_URL);
 
 	await mongoClient.connect();
@@ -39,14 +29,6 @@ export async function initMongoDB(){
 	mongoNFL_DB = mongoClient.db('NFL');
 
 	mongoNFL_Collection = mongoNFL_DB.collection('league');
-
-	//const teams = await getTeams();
-	//console.log(teams);
-	//console.log(await getLastGames(10));
-	//mongoNFL_Collection.find().toArray()
-	//.then((yeet) => console.log(yeet))
-
-	//	console.log();
 
 }
 
@@ -56,7 +38,7 @@ export function authenticateClient(request: any, socket: any, head: any, route: 
 	//	<Authentication Logic Here>
 	//	For now we don't have any user DB set up so any user that joins shall be assigned default perms
 
-	nflSubscriptionServer.wsServer.handleUpgrade((request: any, socket: any, _head: never, webSocket: any) => {
+	nflSubscriptionServer.wsServer.handleUpgrade(request, socket, head, (webSocket: any) => {
 
 		const webclient = {
 			uuid: uuidv4(),
@@ -66,8 +48,6 @@ export function authenticateClient(request: any, socket: any, head: any, route: 
 			session: null,
 			webSocket: webSocket
 		};
-
-		//m_log.info(`[Lobby] newLobbyUser=${webclient.uuid.substring(0, 8)} (${webclient.uuid}) ip=${webclient.ip}`);
 
 		nflSubscriptionServer.wsServer.emit('connection', webSocket, webclient);
 
@@ -97,25 +77,18 @@ function nflMessageHandler(webSocket: any, webclient: any, incomingMessage: any)
 		return;
 	}
 
-	//m_log.info(`[LobbyAPI] cmd=${parsedMessage[0]} user=${webclient.uuid.substring(0, 8)}`);
 	const NFL_API_SWITCH: ApiSwitch = Object.freeze({
-		//'host_list': () => hostList(),
 
-		//'session_list': () => sessionList(),
-		//'session_join': (requestParameters, webclient) => m_sessions.joinSession(requestParameters.sessionID, webclient.uuid),
-		//'session_create': (requestParameters) => m_sessions.createSession(requestParameters.sessionName, requestParameters.clientName, requestParameters.layout),
-		//'session_start': async (requestParameters) => m_sessions.startSession(requestParameters.sessionID),
-		//'session_update': (requestParameters) => m_sessions.updateSession(requestParameters.sessionID, requestParameters.layout),
-		//'session_stop': (requestParameters) => m_sessions.stopSession(requestParameters.sessionID)
+		'teams_list': () => getTeams(),
+		'events_list': (requestParameters, webclient) => getLastGames(requestParameters.count || 10)
+	
 	});
+
+	console.log(parsedMessage)
 
 	NFL_API_SWITCH[parsedMessage[0]](parsedMessage[2], webclient)
 	.then(response => {
 		webSocket.send(JSON.stringify([parsedMessage[1], { response: response } ]));
-		if (parsedMessage[0] === 'session_join') {
-			//	Remove webclient from Lobby subscription server.
-			nflSubscriptionServer.removeWebclient(webclient.uuid);
-		}
 
 	})
 	.catch(error => webSocket.send(errorResponse(error, parsedMessage[1])))

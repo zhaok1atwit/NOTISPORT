@@ -54,8 +54,9 @@ export default class APWebSocket {
 			const socketOpened = new ExternalPromise();
 
 			// otherwise, connect it
-			const [ _ , socket ] = await getWebSocketConnection(this.m_host, this.m_proxyOrReleasePort, this.m_path);
+			const [ _rc , socket ] = await getWebSocketConnection(this.m_host, this.m_proxyOrReleasePort, this.m_path);
 
+			console.log(_rc)
 			// We pass through the event handlers but know to continue when onopen() is called
 
 			if (socket) {

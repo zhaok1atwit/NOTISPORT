@@ -56,7 +56,7 @@ export class NFLAPIConnection {
 		this.onWebSocketOpen = this.onWebSocketOpen.bind(this);
 
 		const host = window.location.hostname;
-		const port = window.location.port;
+		const port = "8080";
 		const path = "";
 		this.m_autoPortWebSocket = new APWebSocket(host, port, path, this.onWebSocketOpen);
 
@@ -83,13 +83,18 @@ export class NFLAPIConnection {
 	allocateRequest() {
 		let request = null;
 		if (this.m_availableRequests.length > 0) {
+			console.log('yayaya')
 
 			const availableRequestIndex = this.m_availableRequests.pop();
 
+			console.log(availableRequestIndex)
+
 			// availableRequestIndex should not be undefined since we check the length of the array.
-			if (availableRequestIndex){
+			if (availableRequestIndex !== undefined){
 				request = this.m_activeRequests[availableRequestIndex];
 			}
+
+			console.log(request)
 
 		}
 		return request;
