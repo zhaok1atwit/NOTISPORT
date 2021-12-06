@@ -20,11 +20,6 @@ export class SubscriptionServer {
 
 		this.wsServer.on('connection', (webSocket: any, webclient: any) => {
 
-			//function heartbeat() {
-				//console.log('Pong!');
-			//	this.isAlive = true;
-			//}
-
 			webSocket.isAlive = true;
 			webSocket.ping(function noop() { });
 
@@ -33,7 +28,6 @@ export class SubscriptionServer {
 			this.addWebclient(webclient);
 
 			webSocket.on('message', (incomingMessage: any) => messageHandler(webSocket, webclient, incomingMessage));
-			//webSocket.on('pong', heartbeat);
 
 		});
 
@@ -77,72 +71,15 @@ export class SubscriptionServer {
 		this.m_connectedWebclients.splice(indexToRemove, 1)[0].webSocket.terminate();
 	}
 
-	/*
-	broadcastUpdate(updateType, identifier, payload) {
+	broadcastUpdate(identifier: string, payload: any) {
 
-		if (updateType === SubscriptionServer.UPDATE_TYPES.SESSION) {
-
-			const sessionUpdatePayload = payload;   //  prev
-
-			if (sessionUpdatePayload !== null) {
-
-				this.connectedWebclients.forEach(webclient => {
-
-					webclient.webSocket.send(JSON.stringify({ subscription: "session", update: sessionUpdatePayload }));
-
-				});
-
-			}
-
-		} else if (updateType === SubscriptionServer.UPDATE_TYPES.GROUP) {
-
-			const groupUpdatePayload = payload;   //  prev
-
-			if (groupUpdatePayload !== null) {
-
-				this.connectedWebclients.forEach(webclient => {
-
-					webclient.webSocket.send(JSON.stringify({ subscription: "group", update: groupUpdatePayload }));
-
-				});
-
-			}
-
-		} else if (updateType === SubscriptionServer.UPDATE_TYPES.HOST) {
-
-
-			const hostUpdatePayload = payload;   //  prev
-
-			if (hostUpdatePayload !== null) {
-
-				this.connectedWebclients.forEach(webclient => {
-
-					webclient.webSocket.send(JSON.stringify(['_sub', 'host', hostUpdatePayload]));
-
-				});
-
-			}
-
-		} else if (updateType === SubscriptionServer.UPDATE_TYPES.TAKE) {
-
-			const takeUpdatePayload = payload;   //  prev
-
-			if (takeUpdatePayload !== null) {
-
-				this.connectedWebclients.forEach(webclient => {
-
-					webclient.webSocket.send(JSON.stringify({ subscription: "take", update: takeUpdatePayload }));
-
-				});
-
-			}
-
-		} else {
-			//	error, unrecognized updateType parameter
+		if (payload) {
+			this.m_connectedWebclients.forEach(webclient => {
+				webclient.webSocket.send(JSON.stringify({ subscription: identifier, update: payload }));
+			});
 		}
-
 	}
-	*/
+	
 
 	destroy() {
 		//	Normally we would use this.c_wsServer.close()
