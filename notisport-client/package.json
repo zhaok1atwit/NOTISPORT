@@ -48,7 +48,7 @@
   "devDependencies": {
     "@types/three": "^0.133.1",
     "concurrently": "^6.3.0",
-    "electron": "^15.3.0",
+    "electron": "^15.3.3",
     "electron-is-dev": "^2.0.0",
     "wait-on": "^6.0.0"
   }

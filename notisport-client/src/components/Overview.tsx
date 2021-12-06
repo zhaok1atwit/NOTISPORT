@@ -79,7 +79,12 @@ export default function Overview() {
 					</Widget>
 				</div>
 				<div style={{ border: 'solid 2px', flexGrow: 1, margin: '0.5rem', padding: '0.25rem' }}>
-					<Widget name={'Leagues'} />
+					<Widget name={'Leagues'} >
+						<div>NFL</div>
+						<div style={{ color: 'gray' }}>NBA</div>
+						<div style={{ color: 'gray' }}>MLB</div>
+						<div style={{ color: 'gray' }}>NHL</div>
+					</Widget>
 				</div>
 			</div>
 			<div style={{ width: '33%', height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -92,10 +97,9 @@ export default function Overview() {
 							teamB={teams.current[event.away_team].abbrev}
 							teamBRecord={`${teams.current[event.away_team].wins}-${teams.current[event.away_team].losses}`}
 							teamBScore={event.awayScore}
-							time={`${new Date(event.date).getMonth()+1}/${new Date(event.date).getDate()}`}
+							time={`??/??`}
 							/>
 						)}
-						<PastGameEntry teamA='WSH' teamARecord='8-2-4' teamAScore={4} teamB='CBJ' teamBRecord='7-4-0' teamBScore={3} time='11/12'/>
 					</Widget>
 				</div>
 				<div style={{ border: 'solid 2px', flexGrow: 1, margin: '0.5rem', padding: '0.25rem' }}>
