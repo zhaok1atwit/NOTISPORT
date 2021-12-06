@@ -15,7 +15,7 @@ class ExternalPromise {
 	}
 }
 
-export default class AutoPortWebSocket {
+export default class APWebSocket {
 
 	m_socket: any;
 	m_socketConnectedPromises: any;

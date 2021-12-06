@@ -1,4 +1,4 @@
-import AutoPortWebSocket from './AutoPortWebSocket';
+import APWebSocket from './APWebSocket';
 
 const MAX_REQUESTS = 128;
 
@@ -34,7 +34,7 @@ export class NFLAPIConnection {
 	exitResolve: any;
 	sessionUpdateHandler: any;
 	m_webSocket: any;
-	m_autoPortWebSocket: AutoPortWebSocket;
+	m_autoPortWebSocket: APWebSocket;
 
 	constructor(sessionUpdateHandler: any) {
 
@@ -58,7 +58,7 @@ export class NFLAPIConnection {
 		const host = window.location.hostname;
 		const port = window.location.port;
 		const path = "";
-		this.m_autoPortWebSocket = new AutoPortWebSocket(host, port, path, this.onWebSocketOpen);
+		this.m_autoPortWebSocket = new APWebSocket(host, port, path, this.onWebSocketOpen);
 
 	}
 
@@ -187,7 +187,7 @@ async function lobbyAPI(nflAPIConnection: NFLAPIConnection, cmd: string, paramet
 			if (nflAPIConnection.m_pendingRequests.length > 0) {
 				// If there is a Queue of messages waiting to be sent, send one.
 				const pendingRequest = nflAPIConnection.m_pendingRequests.shift();
-				
+
 				if (pendingRequest && pendingRequest.request) {
 					nflAPIConnection.m_webSocket.send(JSON.stringify(pendingRequest.request.payload));
 				}
