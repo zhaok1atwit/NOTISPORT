@@ -114,7 +114,10 @@ class League:
                     scoringPlays = data["scoringPlays"]
                     awayScore = scoringPlays[-1]["awayScore"]
                     homeScore = scoringPlays[-1]["homeScore"]
-                    newEvent = Event(id, drives, homeTeam, awayTeam, homeScore, awayScore, self)
+                    #getting Time
+                    newDate = data["header"]["competitions"][0]["date"]
+                    newEvent = Event(id, drives, homeTeam, awayTeam, homeScore, awayScore, newDate)
+
                     curTeam.schedule.append(newEvent)
                     print("Got GAME! id: "+str(newEvent.event_id))
                 except KeyError:
@@ -125,8 +128,9 @@ class League:
                             awayTeam = int(team["id"])
                         if team["homeAway"] == "home":
                             homeTeam = int(team["id"])
+                    newTime = data["header"]["competitions"][0]["date"]
                                         #Drives will be empty
-                    newEvent = Event(id, drives, homeTeam, awayTeam,homeScore,awayScore,self)
+                    newEvent = Event(id, drives, homeTeam, awayTeam,homeScore,awayScore, newDate)
                     print("Got GAME! id: " + str(newEvent.event_id))
                     curTeam.schedule.append(newEvent)
 
